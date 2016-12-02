@@ -5,7 +5,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/judwhite/go-svc/svc"
+	"github.com/todayliu/go-svc/svc"
 )
 
 // implements svc.Service
@@ -62,8 +62,9 @@ func (p program) Start() error {
 	return nil
 }
 
-func (p program) Stop() error {
+func (p program) Stop(signal svc.Signal) error {
 	log.Printf("Stopping...\n")
+	log.Panicln(signal.String())
 	if err := p.svr.stop(); err != nil {
 		return err
 	}
