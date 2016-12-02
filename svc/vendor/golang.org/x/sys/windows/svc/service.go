@@ -60,6 +60,27 @@ type Status struct {
 	WaitHint   uint32 // estimated time required for a pending operation, in milliseconds
 }
 
+func (this *Status) String() string {
+	switch this.State {
+	case State(windows.SERVICE_STOPPED):
+		return "stop"
+	case State(windows.SERVICE_START_PENDING):
+		return "start_pending"
+	case State(windows.SERVICE_STOP_PENDING):
+		return "stop_pending"
+	case State(windows.SERVICE_RUNNING):
+		return "running"
+	case State(windows.SERVICE_CONTINUE_PENDING):
+		return "continue_pending"
+	case State(windows.SERVICE_PAUSE_PENDING):
+		return "pause_pending"
+	case State(windows.SERVICE_PAUSED):
+		return "paused"
+	}
+	return "unknown"
+
+}
+
 // ChangeRequest is sent to the service Handler to request service status change.
 type ChangeRequest struct {
 	Cmd           Cmd

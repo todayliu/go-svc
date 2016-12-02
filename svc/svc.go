@@ -1,7 +1,6 @@
 package svc
 
 import (
-	"os"
 	"os/signal"
 )
 
@@ -26,7 +25,14 @@ type Service interface {
 
 	// Stop is called in response to os.Interrupt, os.Kill, or when a
 	// Windows Service is stopped.
-	Stop(os.Signal) error
+	Stop(Signal) error
+}
+type Signal struct {
+	Name string
+}
+
+func (this *Signal) String() string {
+	return this.Name
 }
 
 // Environment contains information about the environment
