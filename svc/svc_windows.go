@@ -104,9 +104,8 @@ func (ws *windowsService) run() error {
 
 	signalChan := make(chan os.Signal, 1)
 	signalNotify(signalChan, ws.signals...)
-	<-signalChan
 
-	err = ws.i.Stop()
+	err = ws.i.Stop(<-signalChan)
 
 	return err
 }
@@ -130,7 +129,9 @@ loop:
 			changes <- c.CurrentStatus
 		case wsvc.Stop, wsvc.Shutdown:
 			changes <- wsvc.Status{State: wsvc.StopPending}
-			err := ws.i.Stop()
+			signalChan := make(chan os.Signal, 1)
+			signalChan <- WinShutdown{Name: "Stop"}
+			err := ws.i.Stop(<-signalChan)
 			if err != nil {
 				ws.setError(err)
 				return true, 2
@@ -142,4 +143,14 @@ loop:
 	}
 
 	return false, 0
+}
+
+type WinShutdown struct {
+	Name string
+}
+
+func (this *WinShutdown) String() string {
+	return this.Name
+}
+func (this *WinShutdown) Signal() {
 }

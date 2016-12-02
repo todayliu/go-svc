@@ -1,6 +1,9 @@
 package svc
 
-import "os/signal"
+import (
+	"os"
+	"os/signal"
+)
 
 // Create variable signal.Notify function so we can mock it in tests
 var signalNotify = signal.Notify
@@ -23,7 +26,7 @@ type Service interface {
 
 	// Stop is called in response to os.Interrupt, os.Kill, or when a
 	// Windows Service is stopped.
-	Stop() error
+	Stop(os.Signal) error
 }
 
 // Environment contains information about the environment
