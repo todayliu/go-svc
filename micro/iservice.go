@@ -5,7 +5,7 @@ import (
 )
 
 type IService interface {
-	Init() error
+	Init(svc.Environment) error
 	Start() error
 	Stop(svc.Signal) error
 }

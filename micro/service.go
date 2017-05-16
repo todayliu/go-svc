@@ -16,24 +16,22 @@ func NewServer(isv IService) *Service {
 	return &Service{Runner: isv}
 }
 
-func (this *Service) Init(env svc.Environment) error {
-
-	return nil
+func (s *Service) Init(env svc.Environment) error {
+	 return s.Runner.Init(env)
 }
 
-func (this *Service) Start() error {
-
-	if this.Runner != nil {
-		go this.Runner.Start()
+func (s *Service) Start() error {
+	if s.Runner != nil {
+		go s.Runner.Start()
 	}
 
 	return nil
 }
 
-func (this *Service) Stop(signal svc.Signal) error {
+func (s *Service) Stop(signal svc.Signal) error {
 	log.Printf("out %s", signal.String())
-	if this.Runner != nil {
-		this.Runner.Stop(signal)
+	if s.Runner != nil {
+		s.Runner.Stop(signal)
 	}
 	return nil
 }
