@@ -27,7 +27,8 @@ func Run(service Service, sig ...os.Signal) error {
 
 	signalChan := make(chan os.Signal, 1)
 	signalNotify(signalChan, sig...)
-	return service.Stop(Signal{Name:<-signalChan})
+	schan:=<-signalChan
+	return service.Stop(Signal{Name:schan.String()})
 }
 
 type environment struct{}
